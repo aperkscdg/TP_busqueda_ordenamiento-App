@@ -130,5 +130,4 @@ def ordenamiento(opcion):
     fin = time.perf_counter()
     resultado(fin,inicio,arreglo,opcion,None,None)
 
-https://github.com/aperkscdg/TP_busqueda_ordenamiento-App
 MainMenu()
