@@ -1,6 +1,7 @@
 
 import time 
 import os
+import random as r
 
 def MainMenu():
     while True:
@@ -57,8 +58,33 @@ def busqueda(opcion):
         print("Ingrese Numero de forma Ordenada para poder buscar el numero")
         try:
             entrada = int(input("ingrese un numero entero para agregar en su arreglo: "))
-            if entrada <0:
+            if entrada <0 and entrada !=-2:
                 break
+            if entrada == -2:
+                try:
+                    cantidad = int(input("Cuantos Datos Quieres Agregar: "))
+                    numero_agregar = int(1)
+                    index = 0
+                    lista.append(numero_agregar)
+                    if cantidad >500:
+                            raise RuntimeError("Muchos Datos")
+                    while index != cantidad:
+                        numero_random = r.randint(0,10)
+                        if numero_random %2==0:
+                            numero_agregar=numero_agregar+5
+                            lista.append(numero_agregar)
+                        else:
+                            numero_agregar+=1
+                            lista.append(numero_agregar)
+                        index+=1
+                    print("La lista ordenada quedo de esta forma: ", lista)
+                    input("Siguiente: ")
+                    break
+                except ValueError:
+                    print("Error: Debes ingresar un número entero válido.")
+                    time.sleep(2)
+                    os.system("cls")
+                    continue
             lista.append(entrada)
             print(lista)
             time.sleep(1)
@@ -104,8 +130,21 @@ def ordenamiento(opcion):
             print("Agregue un numero negativo para salir y ajecutar el algotirmo ")
             print("Agregue numeros de forma desordenada, para ver el funcionamiento del algoritmo ")
             entrada = int(input("ingrese un numero entero para agregar al arreglo: "))
-            if entrada <0:
+            if entrada <0 and entrada !=-2:
                 break
+            if entrada == -2:
+                try:
+                    cantidad = int(input("Cuantos datos quiere agregar a su arreglo: "))
+                    for datos in range(0,cantidad):
+                        if cantidad > 500:
+                            raise RuntimeError("Muchos Datos")
+                        arreglo.append(r.randint(0,500))
+                    break
+                except ValueError:
+                    print("Error: Debes ingresar un número entero válido.")
+                    time.sleep(2)
+                    os.system("cls")
+                    continue
             arreglo.append(entrada)
             print(arreglo)
             time.sleep(1)
