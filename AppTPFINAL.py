@@ -2,15 +2,30 @@ import time
 import os
 import random as r
 
+# Colores ANSI
+RESET = "\033[0m"
+CYAN = "\033[36m"
+GREEN = "\033[32m"
+YELLOW = "\033[33m"
+RED = "\033[31m"
+WHITE = "\033[97m"
+BOLD = "\033[1m"
+
+def linea():
+    print(CYAN + "──────────────────────────────────────────" + RESET)
+
 def MainMenu():
     while True:
         os.system("cls")
-        print("Elige un algoritmo que quieras usar: ")
-        print("Algoritmo de ordenamiento: (0)")
-        print("Algoritmo de búsqueda binaria: (1)")
-        print("Salir: (2)")
+        linea()
+        print(BOLD + WHITE + "                MENÚ PRINCIPAL" + RESET)
+        linea()
+        print(GREEN + "(0)" + RESET + " Algoritmo de ordenamiento")
+        print(GREEN + "(1)" + RESET + " Algoritmo de búsqueda binaria")
+        print(RED   + "(2)" + RESET + " Salir")
+        linea()
         try:
-            entrada = int(input("Elija una opción: "))
+            entrada = int(input(YELLOW + "Elija una opción: " + RESET))
             if entrada == 0:
                 ordenamiento(entrada)
             if entrada == 1:
@@ -18,85 +33,96 @@ def MainMenu():
             if entrada == 2:
                 break
             if entrada > 2:
-                print("Poner un número válido en el menú.")
-                os.system("cls")
+                print(RED + "Debe ingresar un número válido." + RESET)
+                time.sleep(1)
                 continue
         except ValueError:
-            os.system("cls")
-            print("Error: Debes ingresar un número entero válido.")
+            print(RED + "Error: Debes ingresar un número entero válido." + RESET)
             time.sleep(1)
-            continue
 
-def resultado(fin, inicio, arreglo, entrada, posicion, valor):
+def resultado(fin,inicio,arreglo,entrada,posicion,valor):
     os.system("cls")
+    linea()
+    print(BOLD + WHITE + "                RESULTADO" + RESET)
+    linea()
+
     if entrada == 0:
-        print("El arreglo ordenado es este:", arreglo)
+        print(GREEN + "Arreglo ordenado:" + RESET, arreglo)
+    
     if entrada == 1:
         if len(arreglo) == 0:
-            print("La lista está vacía.")
+            print(RED + "La lista está vacía." + RESET)
         elif posicion is None:
-            print("El número no está en la lista.")
+            print(RED + "El número no se encuentra en la lista." + RESET)
         else:
-            print("El número", valor, "está en la posición:", posicion)
+            print(GREEN + "El número", valor, "está en la posición:", posicion, RESET)
 
     tiempo_seg = fin - inicio
     tiempo_ms = (fin - inicio) * 1000
+
+    linea()
     if tiempo_seg >= 1:
-        print(f"Tardó {tiempo_seg:.4f} segundos ({tiempo_ms:.2f} ms)")
-        input("Presione cualquier tecla para volver al menú: ")
-        return
+        print(f"Tiempo: {tiempo_seg:.4f} segundos ({tiempo_ms:.2f} ms)")
     else:
-        print(f"Tardó {tiempo_ms:.4f} ms")
-        input("Presione cualquier tecla para volver al menú: ")
-        return 
+        print(f"Tiempo: {tiempo_ms:.4f} ms")
+
+    linea()
+    input(YELLOW + "Presione ENTER para volver al menú..." + RESET)
 
 def busqueda(opcion):
-    lista = []
+    lista=[]
     valor = None
     os.system("cls")
+
     while True:
-        print("Ingrese números de forma ordenada para poder buscar el número.")
-        print("Agregue un número negativo para salir y ejecutar el algoritmo.")
-        print("El número -2 sirve para agregar datos automáticamente.")
+        linea()
+        print(BOLD + WHITE + "          BÚSQUEDA BINARIA" + RESET)
+        linea()
+        print("Ingrese números ORDENADOS.")
+        print("Número negativo = ejecutar algoritmo.")
+        print("Número -2 = cargar datos automáticamente.")
+        linea()
+
         try:
-            entrada = int(input("Ingrese un número entero para agregar a su arreglo: "))
+            entrada = int(input(YELLOW + "Ingrese un número: " + RESET))
             if entrada < 0 and entrada != -2:
                 break
+
             if entrada == -2:
                 try:
-                    cantidad = int(input("¿Cuántos datos quieres agregar?: "))
+                    cantidad = int(input("¿Cuántos datos agregar?: "))
                     numero_agregar = 1
                     index = 0
                     lista.append(numero_agregar)
                     if cantidad > 500:
                         raise RuntimeError("Muchos datos")
+
                     while index != cantidad:
-                        numero_random = r.randint(0, 10)
+                        numero_random = r.randint(0,10)
                         if numero_random % 2 == 0:
-                            numero_agregar = numero_agregar + 5
-                            lista.append(numero_agregar)
+                            numero_agregar += 5
                         else:
                             numero_agregar += 1
-                            lista.append(numero_agregar)
+                        lista.append(numero_agregar)
                         index += 1
-                    print("La lista ordenada quedó de esta forma:", lista)
-                    input("Siguiente: ")
+
+                    print(GREEN + "Lista generada automáticamente:" + RESET, lista)
+                    input("Continuar...")
                     break
+
                 except ValueError:
-                    print("Error: Debes ingresar un número entero válido.")
+                    print(RED + "Debe ingresar un número válido." + RESET)
                     time.sleep(2)
-                    os.system("cls")
                     continue
+
             lista.append(entrada)
-            print(lista)
+            print(GREEN + "Lista actual:" + RESET, lista)
             time.sleep(1)
             os.system("cls")
-            continue
+
         except ValueError:
-            print("Error: Debes ingresar un número entero válido.")
+            print(RED + "Debe ingresar un número válido." + RESET)
             time.sleep(2)
-            os.system("cls")
-            continue
 
     izquierda = 0
     derecha = len(lista) - 1
@@ -105,74 +131,81 @@ def busqueda(opcion):
         global inicio
         inicio = time.perf_counter()
         mitad = (izquierda + derecha) // 2
+
         if izquierda <= derecha:
             if lista[mitad] == valor:
                 return mitad
             if lista[mitad] > valor:
                 return busqueda_binaria(lista, izquierda, mitad - 1, valor)
-            if lista[mitad] < valor:
-                return busqueda_binaria(lista, mitad + 1, derecha, valor)
-        else:
-            return None
+            return busqueda_binaria(lista, mitad + 1, derecha, valor)
+
+        return None
+
     while valor is None:
         try:
-            valor = int(input("Ingrese el número que quiere buscar: "))
+            valor = int(input(YELLOW + "Número a buscar: " + RESET))
             posicion = busqueda_binaria(lista, izquierda, derecha, valor)
         except ValueError:
-            print("Error: Debes ingresar un número entero válido.")
+            print(RED + "Debe ingresar un número válido." + RESET)
             time.sleep(2)
-            continue
 
     fin = time.perf_counter()
-    resultado(fin, inicio, lista, opcion, posicion, valor)
+    resultado(fin,inicio,lista,opcion,posicion,valor)
 
 def ordenamiento(opcion):
     os.system("cls")
     arreglo = []
+
     while True:
+        linea()
+        print(BOLD + WHITE + "          ORDENAMIENTO (INSERTION SORT)" + RESET)
+        linea()
+        print("Ingrese números DESORDENADOS.")
+        print("Número negativo = ejecutar algoritmo.")
+        print("Número -2 = cargar datos automáticamente.")
+        linea()
+
         try:
-            os.system("cls")
-            print("Agregue un número negativo para salir y ejecutar el algoritmo.")
-            print("Agregue números de forma desordenada para ver el funcionamiento del algoritmo.")
-            print("El número -2 sirve para agregar datos automáticamente.")
-            entrada = int(input("Ingrese un número entero para agregar al arreglo: "))
+            entrada = int(input(YELLOW + "Ingrese un número: " + RESET))
             if entrada < 0 and entrada != -2:
                 break
+
             if entrada == -2:
                 try:
-                    cantidad = int(input("¿Cuántos datos quiere agregar a su arreglo?: "))
-                    for datos in range(0, cantidad):
-                        if cantidad > 500:
-                            raise RuntimeError("Muchos datos")
-                        arreglo.append(r.randint(0, 500))
-                    print("La lista ordenada quedó de esta forma:", arreglo)
-                    input("Siguiente: ")
+                    cantidad = int(input("¿Cuántos datos agregar?: "))
+                    if cantidad > 500:
+                        raise RuntimeError("Muchos datos")
+
+                    for _ in range(cantidad):
+                        arreglo.append(r.randint(0,500))
+
                     break
+
                 except ValueError:
-                    print("Error: Debes ingresar un número entero válido.")
+                    print(RED + "Debe ingresar un número válido." + RESET)
                     time.sleep(2)
-                    os.system("cls")
                     continue
+
             arreglo.append(entrada)
-            print(arreglo)
+            print(GREEN + "Lista actual:" + RESET, arreglo)
             time.sleep(1)
-            continue
+
         except ValueError:
-            print("Error: Debes ingresar un número entero válido.")
+            print(RED + "Debe ingresar un número válido." + RESET)
             time.sleep(2)
-            continue
 
     def insertion_sort(Arreglo):
         global inicio
         inicio = time.perf_counter()
-        numero = 0
         print("Lista original:", Arreglo)
+
         for index in range(1, len(Arreglo)):
             numero = Arreglo[index]
             while index > 0 and Arreglo[index - 1] > numero:
                 Arreglo[index] = Arreglo[index - 1]
                 index -= 1
             Arreglo[index] = numero
+
         return Arreglo 
 
     arreglo = insertion_sort(arreglo)
