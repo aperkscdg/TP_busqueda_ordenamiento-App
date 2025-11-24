@@ -6,10 +6,10 @@ import random as r
 def MainMenu():
     while True:
         os.system("cls")
-        print("Elije un algotirmo que quieras usar: ")
-        print("Algotirmo de ordenamiento: (0) ")
-        print("Algoritmo de bosqueda binaria: (1) ")
-        print("Salir: (3) " )
+        print("Elije un algoritmo que quieras usar: ")
+        print("Algoritmo de ordenamiento: (0) ")
+        print("Algoritmo de búsqueda binaria: (1) ")
+        print("Salir: (2) " )
         try:
             entrada = int(input("elija una opcion: "))
             if entrada == 0:
@@ -43,11 +43,11 @@ def resultado(fin,inicio,arreglo,entrada,posicion,valor):
     tiempo_ms = (fin - inicio) * 1000
     if tiempo_seg >= 1:
         print(f"Tardó {tiempo_seg:.4f} segundos ({tiempo_ms:.2f} ms)")
-        input("precione cualquier cosa para volver al menu: ")
+        input("presione cualquier cosa para volver al menu: ")
         return
     else:
         print(f"Tardó {tiempo_ms:.4f} ms")
-        input("precione cualquier cosa para volver al menu: ")
+        input("presione cualquier cosa para volver al menu: ")
         return 
 
 def busqueda(opcion):
@@ -109,7 +109,7 @@ def busqueda(opcion):
             if lista[mitad] < valor:
                 return busqueda_binaria(lista,mitad+1,derecha,valor)
         else:
-            return posicion == None
+            return None
     while valor == None:
         try:
             valor = int(input("ingrese el numero que quiera buscar: "))
@@ -127,7 +127,7 @@ def ordenamiento(opcion):
     while True:
         try:
             os.system("cls")
-            print("Agregue un numero negativo para salir y ajecutar el algotirmo ")
+            print("Agregue un numero negativo para salir y ajecutar el algoritmo ")
             print("Agregue numeros de forma desordenada, para ver el funcionamiento del algoritmo ")
             entrada = int(input("ingrese un numero entero para agregar al arreglo: "))
             if entrada <0 and entrada !=-2:
